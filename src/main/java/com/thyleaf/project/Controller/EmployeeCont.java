@@ -15,44 +15,38 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
+@CrossOrigin(origins = "*")
+
 public class EmployeeCont {
 
     @Autowired
     private EmployeeService employeeService;
 
 
-    @RequestMapping
-    public String getAllEmployees(Model model) {
+    @RequestMapping("/list")
+    @ResponseBody
+    public List<Employee> getAllEmployees() {
         List<Employee> list = employeeService.getAllEmployees();
-        model.addAttribute("employees",list);
-        return "add-employee";
-    }
 
+        return list;
+    }
+@ResponseBody
     @RequestMapping(path = {"/edit", "/edit/{id}"})
-    public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id)
-  {
-        if (id.isPresent()) {
-            Employee employee = employeeService.getEmployeeById(id.get());
-            model.addAttribute("employee", employee);
-        } else {
-            model.addAttribute("employee", new Employee());
-        }
-        return "add-edit-employee";
-    }
+    public Employee editEmployeeById( @PathVariable("id") Long id) {
+            Employee employee = employeeService.getEmployeeById(id);
+            return employee;
 
+    }
     @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
-    public String createOrUpdateEmp(Employee employee)
-    {
-        employeeService.createOrUpdateEmployee(employee);
-        return "redirect:/";
+    @ResponseBody
+    public String createOrUpdateEmp( @RequestBody Employee employee) {
+              employeeService.createOrUpdateEmployee(employee);
+              return "save sucessfully";
     }
 
     @RequestMapping(path = "/delete/{id}")
-
-    public String deleteEmp(Model model, @PathVariable("id") Long id)
-    {
-        employeeService.deleteEmployeeById(id);
-        return "redirect:/";
+    public Employee deleteEmp( @PathVariable("id") Long id) {
+      return   employeeService.deleteEmployeeById(id);
     }
 
 

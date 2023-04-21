@@ -69,7 +69,7 @@ public class EmployeeService {
     }
 
 
-    public void deleteEmployeeById(Long id)
+    public Employee deleteEmployeeById(Long id)
     {
         Optional<Employee> employee = employeeRepo.findById(id);
 
@@ -79,5 +79,6 @@ public class EmployeeService {
         } else {
             System.out.println("No employee record exist for given id");
         }
+        return null;
     }
 }
